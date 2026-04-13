@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orynth Industries — Osprey-5 Swarm System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0fffa3;--blue:#00c8ff;--red:#ff3b3b;--amber:#ffb700;
+  --bg:#050a12;--bg2:#080e1a;--bg3:#0c1526;
+  --border:rgba(15,255,163,0.15);--text:#c8d8e8;--text-dim:#5a7a8a;
+  --fd:'Orbitron',sans-serif;--fm:'IBM Plex Mono',monospace;--fb:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:9999;}
+.gbg{background-image:linear-gradient(rgba(15,255,163,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(15,255,163,0.025) 1px,transparent 1px);background-size:60px 60px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(5,10,18,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;}
+.nav-wm{font-family:var(--fd);font-size:16px;letter-spacing:2px;color:#fff;font-weight:700;}
+.nav-wm span{color:var(--teal);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:var(--fm);font-size:12px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--teal);}
+.nav-cta{font-family:var(--fm);font-size:12px;letter-spacing:2px;padding:8px 20px;border:1px solid var(--teal);color:var(--teal);background:transparent;cursor:pointer;text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:rgba(15,255,163,0.1);}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:64px;overflow:hidden;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 60px 80px 80px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:24px;}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--teal);animation:blink 1.2s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+.hero-h1{font-family:var(--fd);font-size:clamp(38px,5.5vw,72px);line-height:1.05;letter-spacing:-1px;color:#fff;margin-bottom:16px;font-weight:900;}
+.hero-h1 .t{color:var(--teal);}
+.hero-h1 .b{color:var(--blue);}
+.hero-sub{font-size:18px;font-weight:300;color:var(--text);max-width:440px;margin-bottom:44px;line-height:1.78;border-left:2px solid var(--teal);padding-left:20px;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-p{font-family:var(--fm);font-size:13px;letter-spacing:2px;padding:14px 32px;background:var(--teal);color:#050a12;border:none;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block;transition:all .2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.btn-p:hover{background:#00ffb3;transform:translateY(-2px);}
+.btn-s{font-family:var(--fm);font-size:13px;letter-spacing:2px;padding:14px 32px;background:transparent;color:var(--blue);border:1px solid var(--blue);cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s;}
+.btn-s:hover{background:rgba(0,200,255,0.08);}
+.hero-right{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(15,255,163,0.07) 0%,transparent 70%);}
+.hc-tl,.hc-br{position:absolute;width:40px;height:40px;border-color:var(--teal);border-style:solid;opacity:.4;}
+.hc-tl{top:20px;left:20px;border-width:2px 0 0 2px;}
+.hc-br{bottom:20px;right:20px;border-width:0 2px 2px 0;}
+@keyframes g1{0%,88%,100%{clip-path:inset(0 0 100% 0);}89%{clip-path:inset(20% 0 50% 0);}91%{clip-path:inset(60% 0 10% 0);}93%{clip-path:inset(40% 0 30% 0);}}
+.glitch{position:relative;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;font-family:inherit;font-size:inherit;color:inherit;}
+.glitch::before{color:var(--blue);animation:g1 9s infinite;left:2px;}
+.glitch::after{color:var(--red);animation:g1 9s .4s infinite reverse;left:-2px;}
+
+/* TICKER */
+.ticker{background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;}
+.ticker-inner{display:flex;width:max-content;animation:tick 34s linear infinite;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ti{display:flex;align-items:center;gap:14px;padding:14px 48px;border-right:1px solid var(--border);white-space:nowrap;}
+.tv{font-family:var(--fd);font-size:16px;color:var(--teal);font-weight:700;letter-spacing:-0.5px;}
+.tl{font-family:var(--fm);font-size:11px;letter-spacing:2px;color:var(--text-dim);}
+
+/* SECTIONS */
+section{padding:100px 80px;position:relative;}
+.sec-lbl{font-family:var(--fm);font-size:11px;letter-spacing:4px;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.sec-lbl::before{content:'//';color:var(--text-dim);}
+.sec-h2{font-family:var(--fd);font-size:clamp(24px,3.2vw,44px);letter-spacing:-1px;color:#fff;line-height:1.1;margin-bottom:24px;font-weight:700;}
+.sec-h2 .a{color:var(--teal);}
+.sec-h2 .ab{color:var(--blue);}
+.sec-intro{max-width:580px;color:var(--text-dim);font-size:15px;line-height:1.88;font-weight:300;}
+
+/* PROBLEM */
+#problem{background:var(--bg2);}
+.pgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:60px;}
+.pcard{background:var(--bg3);padding:40px 32px;border-top:2px solid transparent;transition:border-color .3s;position:relative;}
+.pcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.pcard:hover{border-top-color:var(--red);}
+.pnum{font-family:var(--fd);font-size:32px;color:var(--red);line-height:1;margin-bottom:10px;font-weight:900;}
+.ptitle{font-family:var(--fb);font-size:19px;font-weight:600;color:#fff;margin-bottom:12px;letter-spacing:1px;}
+.pbody{font-size:14px;color:var(--text-dim);line-height:1.85;}
+
+/* OSPREY */
+#osprey{background:var(--bg);}
+.olay{display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:center;margin-top:60px;}
+.oswrap{position:relative;}
+.oswrap::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;height:380px;background:radial-gradient(ellipse,rgba(15,255,163,0.07) 0%,transparent 70%);pointer-events:none;}
+.ofeats{display:flex;flex-direction:column;gap:20px;}
+.frow{display:flex;gap:20px;align-items:flex-start;padding:20px 24px;border:1px solid var(--border);background:rgba(8,14,26,.6);transition:border-color .3s,background .3s;cursor:default;}
+.frow:hover{border-color:var(--teal);background:rgba(15,255,163,.04);}
+.fnum{font-family:var(--fd);font-size:18px;color:rgba(15,255,163,.3);line-height:1;min-width:36px;font-weight:700;}
+.ftitle{font-family:var(--fb);font-size:17px;font-weight:600;color:var(--teal);margin-bottom:6px;letter-spacing:1px;}
+.fbody{font-size:14px;color:var(--text-dim);line-height:1.75;}
+
+/* HOW */
+#how{background:var(--bg2);}
+.hsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative;}
+.hsteps::before{content:'';position:absolute;top:48px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--teal),var(--blue),var(--teal),transparent);opacity:.2;z-index:0;}
+.hstep{padding:40px 24px;position:relative;z-index:1;border-left:1px solid var(--border);}
+.hstep:first-child{border-left:none;}
+.scircle{width:96px;height:96px;border:1px solid var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:28px;position:relative;background:var(--bg3);}
+.scircle::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(15,255,163,.1);}
+.sci{font-family:var(--fd);font-size:22px;color:var(--teal);font-weight:700;}
+.stitle{font-family:var(--fb);font-size:18px;font-weight:600;color:#fff;margin-bottom:10px;letter-spacing:1px;}
+.sbody{font-size:14px;color:var(--text-dim);line-height:1.85;}
+.stag{display:inline-block;margin-top:12px;font-family:var(--fm);font-size:10px;letter-spacing:2px;padding:3px 10px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.2);color:var(--blue);}
+
+/* SPECS */
+#specs{background:var(--bg);}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:60px;}
+.spanel{border:1px solid var(--border);background:var(--bg3);overflow:hidden;}
+.sph{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.spt{font-family:var(--fm);font-size:12px;letter-spacing:3px;color:var(--teal);}
+.spb{font-family:var(--fm);font-size:10px;padding:2px 8px;background:rgba(15,255,163,.1);border:1px solid rgba(15,255,163,.2);color:var(--teal);}
+.stable{width:100%;border-collapse:collapse;}
+.stable tr{border-bottom:1px solid rgba(15,255,163,.06);}
+.stable tr:last-child{border-bottom:none;}
+.stable td{padding:12px 24px;font-size:14px;}
+.stable td:first-child{color:var(--text-dim);font-family:var(--fm);font-size:12px;letter-spacing:1px;width:45%;}
+.stable td:last-child{color:#fff;font-weight:600;}
+.vt{color:var(--teal);}
+.vb{color:var(--blue);}
+
+/* USE CASES */
+#usecases{background:var(--bg2);}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;}
+.ccard{background:var(--bg3);padding:44px 36px;position:relative;overflow:hidden;transition:background .3s;}
+.ccard:hover{background:rgba(15,255,163,.03);}
+.ccard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--blue));opacity:0;transition:opacity .3s;}
+.ccard:hover::before{opacity:1;}
+.cicon{font-size:11px;font-family:var(--fm);letter-spacing:2px;color:var(--teal);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.cicon::before{content:'';display:inline-block;width:24px;height:1px;background:var(--teal);}
+.ctitle{font-family:var(--fd);font-size:18px;color:#fff;letter-spacing:-0.5px;margin-bottom:14px;font-weight:700;line-height:1.2;}
+.cbody{font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:20px;}
+.clist{list-style:none;}
+.clist li{font-family:var(--fm);font-size:11px;letter-spacing:1px;color:var(--blue);line-height:2.1;padding-left:14px;position:relative;}
+.clist li::before{content:'›';position:absolute;left:0;color:var(--teal);}
+
+/* CTA */
+#cta{padding:120px 80px;text-align:center;background:var(--bg);position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(15,255,163,.05) 0%,transparent 70%);}
+.cta-over{font-family:var(--fm);font-size:11px;letter-spacing:4px;color:var(--text-dim);margin-bottom:24px;}
+.cta-h{font-family:var(--fd);font-size:clamp(32px,5.5vw,64px);color:#fff;letter-spacing:-1px;line-height:1.05;margin-bottom:28px;font-weight:900;}
+.cta-h span{color:var(--teal);}
+.cta-sub{font-size:17px;font-weight:300;color:var(--text);max-width:540px;margin:0 auto 48px;line-height:1.78;}
+.cta-btns{display:flex;gap:16px;justify-content:center;}
+.cta-note{margin-top:28px;font-family:var(--fm);font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 80px;display:flex;align-items:center;justify-content:space-between;}
+.flogo{font-family:var(--fd);font-size:14px;letter-spacing:2px;color:#fff;font-weight:700;}
+.flogo span{color:var(--teal);}
+.flinks{display:flex;gap:28px;}
+.flinks a{font-family:var(--fm);font-size:11px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:var(--teal);}
+.fcopy{font-family:var(--fm);font-size:11px;letter-spacing:1px;color:var(--text-dim);}
+
+/* ANIM */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s;}
+.fu.vis{opacity:1;transform:translateY(0);}
+.fu-ready .fu{opacity:1;transform:translateY(0);}
+
+/* MOBILE */
+@media(max-width:960px){
+  #hero{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  .hero-left{padding:60px 32px;}
+  section{padding:72px 28px;}
+  .pgrid,.hsteps,.sgrid,.cgrid{grid-template-columns:1fr;}
+  .olay{grid-template-columns:1fr;}
+  nav{padding:0 24px;}
+  .nav-links{display:none;}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:36px 24px;}
+  #cta{padding:80px 28px;}
+}
+</style>
+</head>
+<body class="gbg">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="16" stroke="#0fffa3" stroke-width="1.5"/>
+      <circle cx="18" cy="18" r="10" stroke="#0fffa3" stroke-width=".8" opacity=".4"/>
+      <path d="M12 18 Q18 8 24 18 Q18 28 12 18" fill="#0fffa3" opacity=".85"/>
+      <line x1="25" y1="11" x2="32" y2="5" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="25" y1="25" x2="32" y2="31" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <div class="nav-wm">ORYNTH<span>.</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#osprey">SYSTEM</a></li>
+    <li><a href="#how">OPERATIONS</a></li>
+    <li><a href="#specs">SPECS</a></li>
+    <li><a href="#usecases">USE CASES</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">REQUEST DEMO</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">OSPREY-5 SWARM SYSTEM // SAR EDITION</div>
+    <h1 class="hero-h1">
+      <span class="glitch" data-text="FIND">FIND</span><br>
+      <span class="t">THEM</span><br>
+      <span class="b">FAST.</span>
+    </h1>
+    <p class="hero-sub">
+      One pilot. Five drones. A helium mothership. Orynth's Osprey-5 deploys in minutes and covers terrain in hours that would take ground teams days — with thermal precision to detect a heat signature through dense canopy at night.
+    </p>
+    <div class="hero-btns">
+      <a href="mailto:joe_sheffield@orynthindustries.com" class="btn-p">SCHEDULE A CALL</a>
+      <a href="#osprey" class="btn-s">SEE THE SYSTEM</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div style="width:100%;max-width:580px;position:relative;">
+      <div class="hc-tl"></div><div class="hc-br"></div>
+      <svg width="100%" viewBox="0 0 680 820" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="680" height="820" fill="#050a12" rx="4"/>
+        <circle cx="60" cy="40" r="1" fill="#fff" opacity=".5"/><circle cx="130" cy="22" r="1.5" fill="#fff" opacity=".4"/>
+        <circle cx="210" cy="48" r="1" fill="#fff" opacity=".6"/><circle cx="320" cy="18" r="1" fill="#fff" opacity=".3"/>
+        <circle cx="430" cy="33" r="1.5" fill="#fff" opacity=".5"/><circle cx="510" cy="52" r="1" fill="#fff" opacity=".4"/>
+        <circle cx="605" cy="28" r="1" fill="#fff" opacity=".6"/><circle cx="648" cy="68" r="1.5" fill="#fff" opacity=".3"/>
+        <circle cx="78" cy="88" r="1" fill="#fff" opacity=".4"/><circle cx="555" cy="88" r="1" fill="#fff" opacity=".5"/>
+        <path d="M0 640 Q80 595 145 612 Q205 582 268 600 Q328 572 388 590 Q448 562 505 580 Q562 556 622 570 Q652 558 680 552 L680 820 L0 820 Z" fill="#0a1018"/>
+        <path d="M0 682 Q62 652 122 666 Q182 642 242 660 Q302 637 362 653 Q422 631 482 648 Q542 626 602 641 Q638 630 680 636 L680 820 L0 820 Z" fill="#0d1520"/>
+        <ellipse cx="340" cy="658" rx="125" ry="22" fill="#0fffa3" opacity=".04"/>
+        <line x1="200" y1="558" x2="478" y2="676" stroke="#0fffa3" stroke-width=".5" opacity=".1"/>
+        <line x1="165" y1="578" x2="502" y2="688" stroke="#0fffa3" stroke-width=".5" opacity=".07"/>
+        <!-- MOTHERSHIP -->
+        <ellipse cx="340" cy="155" rx="90" ry="28" fill="#0a1228" stroke="#00c8ff" stroke-width="1.2"/>
+        <rect x="320" y="178" width="40" height="12" rx="3" fill="#060e1c" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M428 155 L450 140 L450 170 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M252 155 L230 140 L230 170 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M340 129 L355 106 L325 106 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M340 182 L355 201 L325 201 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <circle cx="340" cy="155" r="5" fill="#00c8ff" opacity=".9"/>
+        <ellipse cx="340" cy="202" rx="68" ry="14" fill="none" stroke="#00c8ff" stroke-width=".8" opacity=".28"/>
+        <line x1="340" y1="196" x2="340" y2="308" stroke="#00c8ff" stroke-width=".8" stroke-dasharray="5,4" opacity=".45"/>
+        <!-- LEADER -->
+        <g transform="translate(340,352)">
+          <line x1="-38" y1="-38" x2="-18" y2="-18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="38" y1="-38" x2="18" y2="-18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="-38" y1="38" x2="-18" y2="18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="38" y1="38" x2="18" y2="18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="0,-20 14,-14 20,0 14,14 0,20 -14,14 -20,0 -14,-14" fill="#061a10" stroke="#0fffa3" stroke-width="1.3"/>
+          <circle cx="0" cy="0" r="11" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="5" fill="#0fffa3" opacity=".9"/>
+          <ellipse cx="-38" cy="-38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="38" cy="-38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="-38" cy="38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="38" cy="38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <circle cx="-38" cy="-38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="38" cy="-38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="-38" cy="38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="38" cy="38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <rect x="-6" y="20" width="12" height="10" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="27" r="3.5" fill="#0fffa3" opacity=".75"/>
+          <line x1="-18" y1="18" x2="-24" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="18" y1="18" x2="24" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="-28" y1="38" x2="-20" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="28" y1="38" x2="20" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <!-- FOLLOWERS -->
+        <g transform="translate(215,432)">
+          <line x1="-28" y1="-28" x2="-14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="-28" x2="14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="-28" y1="28" x2="-14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="28" x2="14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <polygon points="0,-15 10,-10 15,0 10,10 0,15 -10,10 -15,0 -10,-10" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="0" cy="0" r="8" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="3.5" fill="#0fffa3" opacity=".8"/>
+          <ellipse cx="-28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="-28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <circle cx="-28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="-28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <rect x="-4" y="15" width="8" height="7" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(465,432)">
+          <line x1="-28" y1="-28" x2="-14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="-28" x2="14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="-28" y1="28" x2="-14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="28" x2="14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <polygon points="0,-15 10,-10 15,0 10,10 0,15 -10,10 -15,0 -10,-10" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="0" cy="0" r="8" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="3.5" fill="#0fffa3" opacity=".8"/>
+          <ellipse cx="-28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="-28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <circle cx="-28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="-28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <rect x="-4" y="15" width="8" height="7" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(155,512)">
+          <line x1="-24" y1="-24" x2="-12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="-24" x2="12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-24" y1="24" x2="-12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="24" x2="12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="0,-13 9,-9 13,0 9,9 0,13 -9,9 -13,0 -9,-9" fill="#061a10" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="0" r="7" fill="#030e08" stroke="#0f6e56" stroke-width=".7"/>
+          <circle cx="0" cy="0" r="2.5" fill="#0fffa3" opacity=".7"/>
+          <ellipse cx="-24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="-24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <circle cx="-24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="-24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(525,512)">
+          <line x1="-24" y1="-24" x2="-12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="-24" x2="12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-24" y1="24" x2="-12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="24" x2="12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="0,-13 9,-9 13,0 9,9 0,13 -9,9 -13,0 -9,-9" fill="#061a10" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="0" r="7" fill="#030e08" stroke="#0f6e56" stroke-width=".7"/>
+          <circle cx="0" cy="0" r="2.5" fill="#0fffa3" opacity=".7"/>
+          <ellipse cx="-24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="-24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <circle cx="-24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="-24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <line x1="340" y1="352" x2="215" y2="432" stroke="#0fffa3" stroke-width=".8" stroke-dasharray="6,4" opacity=".3"/>
+        <line x1="340" y1="352" x2="465" y2="432" stroke="#0fffa3" stroke-width=".8" stroke-dasharray="6,4" opacity=".3"/>
+        <line x1="215" y1="432" x2="155" y2="512" stroke="#0fffa3" stroke-width=".6" stroke-dasharray="5,5" opacity=".2"/>
+        <line x1="465" y1="432" x2="525" y2="512" stroke="#0fffa3" stroke-width=".6" stroke-dasharray="5,5" opacity=".2"/>
+        <path d="M340 396 L286 644 L394 644 Z" fill="#0fffa3" opacity=".025"/>
+        <circle cx="340" cy="657" r="10" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+        <circle cx="340" cy="657" r="5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".8"/>
+        <circle cx="340" cy="657" r="2" fill="#0fffa3" opacity=".9"/>
+        <circle cx="340" cy="657" r="22" fill="none" stroke="#0fffa3" stroke-width=".8" opacity=".22"/>
+        <circle cx="340" cy="657" r="36" fill="none" stroke="#0fffa3" stroke-width=".5" opacity=".12"/>
+        <text x="453" y="148" font-family="'Share Tech Mono',monospace" font-size="10" fill="#00c8ff" opacity=".9">HELIUM MOTHERSHIP</text>
+        <text x="453" y="162" font-family="'Share Tech Mono',monospace" font-size="9" fill="#00c8ff" opacity=".45">aerial mapping · comms relay</text>
+        <text x="403" y="344" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" opacity=".9">LEADER DRONE</text>
+        <text x="403" y="358" font-family="'Share Tech Mono',monospace" font-size="9" fill="#0fffa3" opacity=".45">LiDAR · thermal · mapping</text>
+        <text x="76" y="432" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" opacity=".75" text-anchor="end">FOLLOWER ×4</text>
+        <text x="382" y="640" font-family="'Share Tech Mono',monospace" font-size="9" fill="#0fffa3" opacity=".9">ANOMALY DETECTED</text>
+        <line x1="40" y1="730" x2="640" y2="730" stroke="rgba(15,255,163,.12)" stroke-width=".8"/>
+        <text x="120" y="754" font-family="'Share Tech Mono',monospace" font-size="10" fill="#00c8ff" text-anchor="middle">5 DRONES</text>
+        <text x="120" y="768" font-family="'Share Tech Mono',monospace" font-size="9" fill="#5a7a8a" text-anchor="middle">swarm unit</text>
+        <line x1="200" y1="746" x2="200" y2="774" stroke="rgba(15,255,163,.1)" stroke-width=".8"/>
+        <text x="270" y="754" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" text-anchor="middle">THERMAL IR</text>
+        <text x="270" y="768" font-family="'Share Tech Mono',monospace" font-size="9" fill="#5a7a8a" text-anchor="middle">night ops</text>
+        <line x1="340" y1="746" x2="340" y2="774" stroke="rgba(15,255,163,.1)" stroke-width=".8"/>
+        <text x="410" y="754" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" text-anchor="middle">1 PILOT</text>
+        <text x="410" y="768" font-family="'Share Tech Mono',monospace" font-size="9" fill="#5a7a8a" text-anchor="middle">full control</text>
+        <line x1="480" y1="746" x2="480" y2="774" stroke="rgba(15,255,163,.1)" stroke-width=".8"/>
+        <text x="560" y="754" font-family="'Share Tech Mono',monospace" font-size="10" fill="#00c8ff" text-anchor="middle">MESHTASTIC</text>
+        <text x="560" y="768" font-family="'Share Tech Mono',monospace" font-size="9" fill="#5a7a8a" text-anchor="middle">mesh comms</text>
+        <text x="340" y="800" font-family="'Share Tech Mono',monospace" font-size="11" fill="#0fffa3" text-anchor="middle" opacity=".38" letter-spacing="3">FIND THEM FAST</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ti"><span class="tv">~160K</span><span class="tl">SAR operations annually in the US</span></div>
+    <div class="ti"><span class="tv">72 HRS</span><span class="tl">survival window in wilderness cases</span></div>
+    <div class="ti"><span class="tv">40%</span><span class="tl">of SAR missions occur at night</span></div>
+    <div class="ti"><span class="tv">3–5×</span><span class="tl">faster area coverage vs. single drone</span></div>
+    <div class="ti"><span class="tv">1 PILOT</span><span class="tl">controls the entire Osprey-5 swarm</span></div>
+    <div class="ti"><span class="tv">50 SQ MI</span><span class="tl">searchable in a single deployment</span></div>
+    <div class="ti"><span class="tv">15 MIN</span><span class="tl">avalanche burial survival threshold</span></div>
+    <div class="ti"><span class="tv">~160K</span><span class="tl">SAR operations annually in the US</span></div>
+    <div class="ti"><span class="tv">72 HRS</span><span class="tl">survival window in wilderness cases</span></div>
+    <div class="ti"><span class="tv">40%</span><span class="tl">of SAR missions occur at night</span></div>
+    <div class="ti"><span class="tv">3–5×</span><span class="tl">faster area coverage vs. single drone</span></div>
+    <div class="ti"><span class="tv">1 PILOT</span><span class="tl">controls the entire Osprey-5 swarm</span></div>
+    <div class="ti"><span class="tv">50 SQ MI</span><span class="tl">searchable in a single deployment</span></div>
+    <div class="ti"><span class="tv">15 MIN</span><span class="tl">avalanche burial survival threshold</span></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="sec-lbl fu">THE PROBLEM</div>
+  <h2 class="sec-h2 fu">SAR TEAMS ARE <span class="a">OUTGUNNED</span><br>BY TERRAIN.</h2>
+  <p class="sec-intro fu">Every minute a subject is missing, the search radius grows. Ground teams are limited by darkness, canopy, and communication gaps. A single drone helps — but it's still just one set of eyes covering a fraction of the ground.</p>
+  <div class="pgrid">
+    <div class="pcard fu">
+      <div class="pnum">01</div>
+      <div class="ptitle">Coverage Bottleneck</div>
+      <div class="pbody">A single drone covers 1–2 square miles per hour in dense terrain. With a 72-hour survival window shrinking fast, that math doesn't work. Swarm technology changes the equation — five thermal sensors covering parallel grid sectors simultaneously, multiplying coverage without multiplying pilots.</div>
+    </div>
+    <div class="pcard fu">
+      <div class="pnum">02</div>
+      <div class="ptitle">Nighttime Blindness</div>
+      <div class="pbody">Over 40% of SAR activations happen at night or in zero-visibility conditions. Human searchers are nearly useless in dense canopy after dark. Most commercial drones lack the thermal resolution to separate a human heat signature from ambient ground warmth at operational altitude.</div>
+    </div>
+    <div class="pcard fu">
+      <div class="pnum">03</div>
+      <div class="ptitle">Comms Collapse</div>
+      <div class="pbody">Remote terrain kills radio range. Cell towers don't exist in the canyons, forests, and river corridors where people get lost. When communications fail, ground team coordination collapses — and the search falls apart precisely when every second counts.</div>
+    </div>
+  </div>
+</section>
+
+<!-- OSPREY-5 SYSTEM -->
+<section id="osprey" style="background:var(--bg2);">
+  <div class="sec-lbl fu">THE SYSTEM</div>
+  <h2 class="sec-h2 fu">OSPREY-5 <span class="a">ECOSYSTEM</span></h2>
+  <p class="sec-intro fu">A purpose-built three-tier aerial platform — mothership, leader, and four autonomous followers — engineered specifically for the realities of search and rescue operations in communication-denied, low-visibility environments.</p>
+  <div class="olay">
+    <div class="oswrap fu">
+      <svg width="100%" viewBox="0 0 680 820" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="680" height="820" fill="#080e1a" rx="8"/>
+        <circle cx="55" cy="38" r="1" fill="#fff" opacity=".35"/><circle cx="185" cy="26" r="1" fill="#fff" opacity=".4"/>
+        <circle cx="315" cy="16" r="1" fill="#fff" opacity=".3"/><circle cx="455" cy="33" r="1.5" fill="#fff" opacity=".35"/>
+        <circle cx="608" cy="20" r="1" fill="#fff" opacity=".4"/><circle cx="644" cy="78" r="1" fill="#fff" opacity=".3"/>
+        <path d="M0 648 Q82 608 148 624 Q222 594 288 612 Q355 580 422 598 Q492 564 558 582 Q620 566 680 556 L680 820 L0 820 Z" fill="#0a1018"/>
+        <path d="M0 688 Q80 658 142 672 Q218 648 286 664 Q354 640 422 656 Q492 632 560 648 Q628 634 680 642 L680 820 L0 820 Z" fill="#0d1520"/>
+        <ellipse cx="340" cy="664" rx="130" ry="22" fill="#0fffa3" opacity=".04"/>
+        <line x1="218" y1="564" x2="462" y2="680" stroke="#0fffa3" stroke-width=".5" opacity=".09"/>
+        <ellipse cx="340" cy="155" rx="90" ry="28" fill="#0a1228" stroke="#00c8ff" stroke-width="1.2"/>
+        <rect x="320" y="178" width="40" height="12" rx="3" fill="#060e1c" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M428 155 L450 140 L450 170 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M252 155 L230 140 L230 170 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M340 129 L355 106 L325 106 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <path d="M340 182 L355 201 L325 201 Z" fill="#0a1228" stroke="#00c8ff" stroke-width=".8"/>
+        <circle cx="340" cy="155" r="5" fill="#00c8ff" opacity=".9"/>
+        <ellipse cx="340" cy="202" rx="68" ry="14" fill="none" stroke="#00c8ff" stroke-width=".8" opacity=".26"/>
+        <line x1="340" y1="196" x2="340" y2="308" stroke="#00c8ff" stroke-width=".8" stroke-dasharray="5,4" opacity=".42"/>
+        <g transform="translate(340,352)">
+          <line x1="-38" y1="-38" x2="-18" y2="-18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="38" y1="-38" x2="18" y2="-18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="-38" y1="38" x2="-18" y2="18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="38" y1="38" x2="18" y2="18" stroke="#0fffa3" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="0,-20 14,-14 20,0 14,14 0,20 -14,14 -20,0 -14,-14" fill="#061a10" stroke="#0fffa3" stroke-width="1.3"/>
+          <circle cx="0" cy="0" r="11" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="5" fill="#0fffa3" opacity=".9"/>
+          <ellipse cx="-38" cy="-38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="38" cy="-38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="-38" cy="38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <ellipse cx="38" cy="38" rx="16" ry="5" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".6"/>
+          <circle cx="-38" cy="-38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="38" cy="-38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="-38" cy="38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="38" cy="38" r="5" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <rect x="-6" y="20" width="12" height="10" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="27" r="3.5" fill="#0fffa3" opacity=".75"/>
+          <line x1="-18" y1="18" x2="-24" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="18" y1="18" x2="24" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="-28" y1="38" x2="-20" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="28" y1="38" x2="20" y2="38" stroke="#0fffa3" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(215,432)">
+          <line x1="-28" y1="-28" x2="-14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="-28" x2="14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="-28" y1="28" x2="-14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="28" x2="14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <polygon points="0,-15 10,-10 15,0 10,10 0,15 -10,10 -15,0 -10,-10" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="0" cy="0" r="8" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="3.5" fill="#0fffa3" opacity=".8"/>
+          <ellipse cx="-28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="-28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <circle cx="-28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="-28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <rect x="-4" y="15" width="8" height="7" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(465,432)">
+          <line x1="-28" y1="-28" x2="-14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="-28" x2="14" y2="-14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="-28" y1="28" x2="-14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="28" x2="14" y2="14" stroke="#0fffa3" stroke-width="2.8" stroke-linecap="round"/>
+          <polygon points="0,-15 10,-10 15,0 10,10 0,15 -10,10 -15,0 -10,-10" fill="#061a10" stroke="#0fffa3" stroke-width="1"/>
+          <circle cx="0" cy="0" r="8" fill="#030e08" stroke="#0f6e56" stroke-width=".8"/>
+          <circle cx="0" cy="0" r="3.5" fill="#0fffa3" opacity=".8"/>
+          <ellipse cx="-28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="-28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="-28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <ellipse cx="28" cy="28" rx="12" ry="4" fill="none" stroke="#0fffa3" stroke-width="1.2" opacity=".55"/>
+          <circle cx="-28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="-28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="-28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <circle cx="28" cy="28" r="4" fill="#061a10" stroke="#0fffa3" stroke-width=".8"/>
+          <rect x="-4" y="15" width="8" height="7" rx="2" fill="#020810" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(155,512)">
+          <line x1="-24" y1="-24" x2="-12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="-24" x2="12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-24" y1="24" x2="-12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="24" x2="12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="0,-13 9,-9 13,0 9,9 0,13 -9,9 -13,0 -9,-9" fill="#061a10" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="0" r="7" fill="#030e08" stroke="#0f6e56" stroke-width=".7"/>
+          <circle cx="0" cy="0" r="2.5" fill="#0fffa3" opacity=".7"/>
+          <ellipse cx="-24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="-24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <circle cx="-24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="-24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <g transform="translate(525,512)">
+          <line x1="-24" y1="-24" x2="-12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="-24" x2="12" y2="-12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-24" y1="24" x2="-12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="24" y1="24" x2="12" y2="12" stroke="#0fffa3" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="0,-13 9,-9 13,0 9,9 0,13 -9,9 -13,0 -9,-9" fill="#061a10" stroke="#0fffa3" stroke-width=".9"/>
+          <circle cx="0" cy="0" r="7" fill="#030e08" stroke="#0f6e56" stroke-width=".7"/>
+          <circle cx="0" cy="0" r="2.5" fill="#0fffa3" opacity=".7"/>
+          <ellipse cx="-24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="-24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="-24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <ellipse cx="24" cy="24" rx="10" ry="3.5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".5"/>
+          <circle cx="-24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="-24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="-24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+          <circle cx="24" cy="24" r="3.5" fill="#061a10" stroke="#0fffa3" stroke-width=".7"/>
+        </g>
+        <line x1="340" y1="352" x2="215" y2="432" stroke="#0fffa3" stroke-width=".8" stroke-dasharray="6,4" opacity=".28"/>
+        <line x1="340" y1="352" x2="465" y2="432" stroke="#0fffa3" stroke-width=".8" stroke-dasharray="6,4" opacity=".28"/>
+        <line x1="215" y1="432" x2="155" y2="512" stroke="#0fffa3" stroke-width=".6" stroke-dasharray="5,5" opacity=".2"/>
+        <line x1="465" y1="432" x2="525" y2="512" stroke="#0fffa3" stroke-width=".6" stroke-dasharray="5,5" opacity=".2"/>
+        <path d="M340 396 L290 646 L390 646 Z" fill="#0fffa3" opacity=".022"/>
+        <circle cx="340" cy="658" r="10" fill="none" stroke="#0fffa3" stroke-width="1.5" opacity=".55"/>
+        <circle cx="340" cy="658" r="5" fill="none" stroke="#0fffa3" stroke-width="1" opacity=".75"/>
+        <circle cx="340" cy="658" r="2" fill="#0fffa3" opacity=".9"/>
+        <circle cx="340" cy="658" r="22" fill="none" stroke="#0fffa3" stroke-width=".8" opacity=".2"/>
+        <circle cx="340" cy="658" r="36" fill="none" stroke="#0fffa3" stroke-width=".5" opacity=".1"/>
+        <text x="453" y="148" font-family="'Share Tech Mono',monospace" font-size="10" fill="#00c8ff" opacity=".9">HELIUM MOTHERSHIP</text>
+        <text x="403" y="344" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" opacity=".9">LEADER DRONE</text>
+        <text x="76" y="432" font-family="'Share Tech Mono',monospace" font-size="10" fill="#0fffa3" opacity=".7" text-anchor="end">FOLLOWER ×4</text>
+        <text x="382" y="642" font-family="'Share Tech Mono',monospace" font-size="9" fill="#0fffa3" opacity=".85">ANOMALY DETECTED</text>
+        <line x1="40" y1="730" x2="640" y2="730" stroke="rgba(15,255,163,.1)" stroke-width=".8"/>
+        <text x="340" y="800" font-family="'Share Tech Mono',monospace" font-size="11" fill="#0fffa3" text-anchor="middle" opacity=".32" letter-spacing="3">ORYNTH INDUSTRIES</text>
+      </svg>
+    </div>
+    <div class="ofeats">
+      <div class="frow fu">
+        <div class="fnum">01</div>
+        <div>
+          <div class="ftitle">Helium Mothership</div>
+          <div class="fbody">A high-altitude tethered aerostat that launches first, maps the full search area from elevation, and acts as a persistent communications relay — keeping the swarm online even when cell towers and ground radios are out, using Meshtastic mesh protocol across the entire operational area.</div>
+        </div>
+      </div>
+      <div class="frow fu">
+        <div class="fnum">02</div>
+        <div>
+          <div class="ftitle">Leader Drone</div>
+          <div class="fbody">The only drone a human directly pilots. Loaded with LiDAR, dual-band thermal imaging, and live mapping. It leads the swarm, processes anomaly data, and maintains formation — freeing the operator to focus entirely on the search rather than managing individual aircraft.</div>
+        </div>
+      </div>
+      <div class="frow fu">
+        <div class="fnum">03</div>
+        <div>
+          <div class="ftitle">Four Follower Drones</div>
+          <div class="fbody">Fly autonomously in a V-pattern behind the leader, each carrying a thermal camera. When any follower detects an anomaly, it breaks formation and hovers to confirm — then pushes GPS coordinates to the ground station and ATAK with no human input required.</div>
+        </div>
+      </div>
+      <div class="frow fu">
+        <div class="fnum">04</div>
+        <div>
+          <div class="ftitle">ATAK / CoTAK Integration</div>
+          <div class="fbody">All drone positions, thermal contacts, and confirmed anomalies overlay onto the same TAK common operating picture used by ground teams and incident command. Every responder sees the full aerial picture — and no ground searcher gets mistaken for the missing subject.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="sec-lbl fu">OPERATIONS FLOW</div>
+  <h2 class="sec-h2 fu">FROM CALLOUT TO <span class="a">CONTACT</span></h2>
+  <p class="sec-intro fu">Engineered for rapid deployment — from Pelican case to active aerial sweep in under 15 minutes, with no specialized infrastructure required on scene.</p>
+  <div class="hsteps">
+    <div class="hstep fu">
+      <div class="scircle"><div class="sci">I</div></div>
+      <div class="stitle">ARRIVE & ASSESS</div>
+      <div class="sbody">Team arrives on scene. Incident command defines the search perimeter and inputs it into the ground control station. The entire Osprey-5 kit deploys from a single portable case — ready to launch in minutes regardless of terrain or infrastructure.</div>
+      <span class="stag">T+0 MIN</span>
+    </div>
+    <div class="hstep fu">
+      <div class="scircle"><div class="sci">II</div></div>
+      <div class="stitle">MOTHERSHIP ASCENDS</div>
+      <div class="sbody">The helium aerostat launches first, climbing to operational altitude above canopy. It begins wide-area thermal and optical mapping while simultaneously establishing a Meshtastic mesh communication node that restores team connectivity across the entire search zone.</div>
+      <span class="stag">T+8 MIN</span>
+    </div>
+    <div class="hstep fu">
+      <div class="scircle"><div class="sci">III</div></div>
+      <div class="stitle">SWARM DEPLOYS</div>
+      <div class="sbody">The pilot launches the leader and the four followers auto-form into V-pattern. The swarm begins its systematic grid sweep — up to 50 square miles per deployment — with parallel thermal coverage across all five sensors covering the search area simultaneously.</div>
+      <span class="stag">T+12 MIN</span>
+    </div>
+    <div class="hstep fu">
+      <div class="scircle"><div class="sci">IV</div></div>
+      <div class="stitle">CONFIRM & VECTOR</div>
+      <div class="sbody">On anomaly detection, a follower breaks formation and hovers for visual confirmation. Coordinates transmit to ATAK instantly. Ground teams vector toward the contact while the remaining swarm continues sweeping adjacent sectors without any interruption to coverage.</div>
+      <span class="stag">T+VAR</span>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs" style="background:var(--bg2);">
+  <div class="sec-lbl fu">TECHNICAL SPECIFICATIONS</div>
+  <h2 class="sec-h2 fu">BUILT FOR <span class="a">FIELD CONDITIONS</span></h2>
+  <p class="sec-intro fu">Designed to operate in rain, darkness, dense canopy, and communication-denied environments — because those are exactly the conditions where people get lost.</p>
+  <div class="sgrid">
+    <div class="spanel fu">
+      <div class="sph"><span class="spt">LEADER DRONE</span><span class="spb">OSPREY-L1</span></div>
+      <table class="stable">
+        <tr><td>Thermal sensor</td><td class="vt">Dual-band LWIR + MWIR</td></tr>
+        <tr><td>Mapping tech</td><td>LiDAR + HD optical</td></tr>
+        <tr><td>Flight time</td><td class="vt">~45 min per charge</td></tr>
+        <tr><td>Control range</td><td>BVLOS via mesh relay</td></tr>
+        <tr><td>Comms</td><td class="vb">Meshtastic + A-TAK CoT</td></tr>
+        <tr><td>Weight</td><td>~3.2 kg (payload included)</td></tr>
+        <tr><td>IP rating</td><td>IP54 — rain and dust resistant</td></tr>
+      </table>
+    </div>
+    <div class="spanel fu">
+      <div class="sph"><span class="spt">FOLLOWER DRONES ×4</span><span class="spb">OSPREY-F4</span></div>
+      <table class="stable">
+        <tr><td>Thermal sensor</td><td class="vt">LWIR thermal camera</td></tr>
+        <tr><td>Autonomy</td><td>Semi-autonomous formation hold</td></tr>
+        <tr><td>Breakaway logic</td><td class="vt">Anomaly-triggered hover</td></tr>
+        <tr><td>Flight time</td><td>~40 min per charge</td></tr>
+        <tr><td>Formation type</td><td class="vb">V-pattern (geese formation)</td></tr>
+        <tr><td>Pilot requirement</td><td>Zero — follows leader autonomously</td></tr>
+        <tr><td>IP rating</td><td>IP54 — rain and dust resistant</td></tr>
+      </table>
+    </div>
+    <div class="spanel fu">
+      <div class="sph"><span class="spt">HELIUM MOTHERSHIP</span><span class="spb">OSPREY-M1</span></div>
+      <table class="stable">
+        <tr><td>Platform type</td><td class="vb">Tethered helium aerostat</td></tr>
+        <tr><td>Operational altitude</td><td>200–400 ft AGL</td></tr>
+        <tr><td>Endurance</td><td class="vt">12+ hours continuous</td></tr>
+        <tr><td>Primary role</td><td>Wide-area mapping + comms relay</td></tr>
+        <tr><td>Coverage area</td><td class="vt">50+ sq mi per deployment</td></tr>
+        <tr><td>Comms protocol</td><td class="vb">Meshtastic mesh node</td></tr>
+        <tr><td>Sensor payload</td><td>HD optical + wide-area thermal</td></tr>
+      </table>
+    </div>
+    <div class="spanel fu">
+      <div class="sph"><span class="spt">GROUND CONTROL SYSTEM</span><span class="spb">LOC8 GCS</span></div>
+      <table class="stable">
+        <tr><td>Display</td><td>Live thermal feed — all 5 drones</td></tr>
+        <tr><td>TAK integration</td><td class="vt">A-TAK / WinTAK CoT overlay</td></tr>
+        <tr><td>Mapping software</td><td>LOC8 real-time grid planning</td></tr>
+        <tr><td>Pilots required</td><td class="vt">1 — full swarm control</td></tr>
+        <tr><td>Alert system</td><td>Auto GPS ping on anomaly confirm</td></tr>
+        <tr><td>BVLOS</td><td class="vb">FAA waiver pathway included</td></tr>
+        <tr><td>Connectivity</td><td>Fiber-optic + RF redundant link</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="usecases">
+  <div class="sec-lbl fu">MISSION PROFILES</div>
+  <h2 class="sec-h2 fu">WHERE <span class="a">OSPREY-5</span> OPERATES</h2>
+  <p class="sec-intro fu">Engineered for the full spectrum of emergency response — from major disaster events down to a single missing hiker after dark in terrain with no comms.</p>
+  <div class="cgrid">
+    <div class="ccard fu">
+      <div class="cicon">DISASTER RESPONSE</div>
+      <div class="ctitle">When everything fails at once</div>
+      <div class="cbody">Earthquakes, wildfires, and major storm events destroy roads, down power lines, and collapse of communication simultaneously. The Osprey-5 mothership re-establishes a comms relay in minutes while the swarm maps structural damage and flags survivor heat signatures across a massive impact zone.</div>
+      <ul class="clist">
+        <li>Rapid wide-area damage assessment</li>
+        <li>Comms relay when all towers are down</li>
+        <li>Works alongside Red Cross, Team Rubicon, FEMA</li>
+        <li>Live thermal and optical feed to incident command</li>
+      </ul>
+    </div>
+    <div class="ccard fu">
+      <div class="cicon">AVALANCHE SAR</div>
+      <div class="ctitle">Racing the burial clock</div>
+      <div class="cbody">Avalanche survival drops sharply after 15 minutes of burial. Ground probe lines are slow. Beacon searches are limited to one point at a time. The Osprey-5 swarm blankets a debris field with thermal — detecting residual body heat through compacted snow faster than any ground team can cover the same terrain.</div>
+      <ul class="clist">
+        <li>Full debris field thermal sweep in minutes</li>
+        <li>Precise GPS burial coordinates to rescue teams</li>
+        <li>Operates in high-altitude, extreme cold conditions</li>
+        <li>Complements beacon search — does not replace it</li>
+      </ul>
+    </div>
+    <div class="ccard fu">
+      <div class="cicon">WILDERNESS SAR</div>
+      <div class="ctitle">Lost in the backcountry</div>
+      <div class="cbody">Dense tree canopy, no cell coverage, zero visibility after dark. The mothership climbs above the canopy to map while the swarm sweeps below the treeline with thermal — detecting body heat through foliage even when a subject is unconscious and cannot signal their location.</div>
+      <ul class="clist">
+        <li>Hill country, river corridors, dense cedar</li>
+        <li>Active night sweeps with thermal IR</li>
+        <li>Mesh comms when ground radios fail</li>
+        <li>Compatible with TEXSAR and Travis County SAR protocols</li>
+      </ul>
+    </div>
+    <div class="ccard fu">
+      <div class="cicon">FLOOD &amp; SWIFT WATER</div>
+      <div class="ctitle">When the water rises fast</div>
+      <div class="cbody">Flash floods strand people on rooftops, in vehicles, and on high ground before boats can safely reach them. The swarm surveys a 50-square-mile inundation zone in a single flight — flagging thermal signatures while waterways are still too dangerous for any surface rescue vessel to operate.</div>
+      <ul class="clist">
+        <li>Survivor detection on rooftops and high ground</li>
+        <li>Safe to fly while conditions are dangerous for boats</li>
+        <li>Continuous overhead coverage during active rescue</li>
+        <li>Live feed to swift water teams and incident command</li>
+      </ul>
+    </div>
+    <div class="ccard fu">
+      <div class="cicon">URBAN MISSING</div>
+      <div class="ctitle">Dementia, mental health, children</div>
+      <div class="cbody">Urban and suburban missing persons cases demand massive coordination across neighborhoods, parks, and drainage systems. The swarm provides overhead thermal coverage that multiplies the search team's effectiveness — covering in one pass what takes dozens of volunteers hours on foot in the dark.</div>
+      <ul class="clist">
+        <li>Nighttime perimeter sweeps</li>
+        <li>River, drainage channel, and park coverage</li>
+        <li>ATAK integration with all ground teams</li>
+        <li>Significantly reduces false-positive callouts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" style="background:var(--bg2);">
+  <div class="cta-over">// JOIN THE MISSION</div>
+  <h2 class="cta-h">EVERY HOUR<br><span>MATTERS.</span></h2>
+  <p class="cta-sub">We're actively speaking with SAR teams, fire departments, and emergency management agencies across Texas and the Southwest. If your agency is ready to expand its search capability, we want to hear from you.</p>
+  <div class="cta-btns">
+    <a href="mailto:joe_sheffield@orynthindustries.com" class="btn-p">SCHEDULE A CALL</a>
+    <a href="#osprey" class="btn-s">REVIEW THE SYSTEM</a>
+  </div>
+  <div class="cta-note">PROVISIONAL PATENT FILED &nbsp;·&nbsp; FEMA FUNDING COMPATIBLE &nbsp;·&nbsp; TEXAS STATE UNIVERSITY INCUBATOR</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">ORYNTH<span>.</span></div>
+  <div class="flinks">
+    <a href="#osprey">System</a>
+    <a href="#how">Operations</a>
+    <a href="#specs">Specs</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#cta">Contact</a>
+  </div>
+  <div class="fcopy">© 2025 Orynth Industries · San Marcos, Texas</div>
+</footer>
+
+<script>
+const allFu = document.querySelectorAll('.fu');
+const fallback = setTimeout(()=>{ document.body.classList.add('fu-ready'); }, 800);
+if('IntersectionObserver' in window){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  allFu.forEach(el=>{ obs.observe(el); });
+  setTimeout(()=>{
+    allFu.forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top < window.innerHeight) el.classList.add('vis'); });
+    allFu.forEach((el,i)=>{ const sib=[...el.parentElement.querySelectorAll(':scope > .fu')]; const idx=sib.indexOf(el); if(idx>0) el.style.transitionDelay=(idx*0.11)+'s'; });
+  },100);
+} else {
+  clearTimeout(fallback);
+  document.body.classList.add('fu-ready');
+}
+</script>
+</body>
+</html>
